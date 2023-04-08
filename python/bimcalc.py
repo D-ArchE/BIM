@@ -1,40 +1,33 @@
-# Função para calcular a quantidade de colunas necessárias
-def calcular_quantidade_colunas(distancia_entre_colunas_m, distancia_minima_m):
-    quantidade_colunas = 1
-    distancia_atual_m = distancia_entre_colunas_m
-    
-    while distancia_atual_m > distancia_minima_m:
-        quantidade_colunas += 1
-        distancia_atual_m = distancia_entre_colunas_m / quantidade_colunas
-    
-    return quantidade_colunas
+def calcular_bim():
+    largura = float(input("Digite a largura do bloco em cm: "))
+    altura = float(input("Digite a altura do bloco em cm: "))
+    comprimento = float(input("Digite o comprimento do bloco em cm: "))
+    altura_coluna = float(input("Digite a altura da coluna em metros: "))
+    distancia_entre_colunas = float(input("Digite a distância entre as colunas em metros: "))
 
-# Solicita informações ao usuário
-largura_bloco_cm = float(input("Informe a largura do bloco de construção em centímetros: "))
-altura_bloco_cm = float(input("Informe a altura do bloco de construção em centímetros: "))
-comprimento_bloco_cm = float(input("Informe o comprimento do bloco de construção em centímetros: "))
-altura_coluna_m = float(input("Informe a altura da coluna em metros: "))
-distancia_entre_colunas_m = float(input("Informe a distância entre as colunas em metros: "))
+    # Converter medidas para metros
+    largura = largura / 100
+    altura = altura / 100
+    comprimento = comprimento / 100
 
-# Calcula quantidade de blocos na altura da coluna
-altura_bloco_m = altura_bloco_cm / 100
-quantidade_blocos_coluna = round(altura_coluna_m / altura_bloco_m)
+    # Calcular a quantidade de blocos por coluna
+    altura_coluna_cm = altura_coluna * 100
+    qtd_blocos_coluna = altura_coluna_cm // altura
 
-# Calcula quantidade de colunas para a largura informada
-largura_bloco_m = largura_bloco_cm / 100
-comprimento_bloco_m = comprimento_bloco_cm / 100
-distancia_entre_colunas_cm = distancia_entre_colunas_m * 100
-quantidade_colunas = round(distancia_entre_colunas_cm / comprimento_bloco_m)
+    # Calcular a quantidade de colunas necessárias para uma parede com 2m de distância entre as colunas
+    distancia_entre_colunas_cm = distancia_entre_colunas * 100
+    largura_parede_cm = largura * 100
+    qtd_colunas = largura_parede_cm // (largura + distancia_entre_colunas_cm)
+    if largura_parede_cm % (largura + distancia_entre_colunas_cm) != 0:
+        qtd_colunas += 1
 
-# Calcula quantidade de blocos para a parede
-quantidade_blocos_parede = quantidade_colunas * quantidade_blocos_coluna
+    # Calcular a quantidade total de blocos
+    qtd_blocos_total = qtd_colunas * qtd_blocos_coluna + (largura_parede_cm - distancia_entre_colunas_cm * (qtd_colunas - 1)) * altura_coluna_cm // altura
 
-# Imprime resultado
-print(f"A quantidade total de blocos necessários para construir a parede é de {quantidade_blocos_parede} blocos.")
+    # Imprimir os resultados
+    print(f"Quantidade de blocos por coluna: {qtd_blocos_coluna:.0f}")
+    print(f"Quantidade de colunas necessárias: {qtd_colunas:.0f}")
+    print(f"Quantidade total de blocos (incluindo os de coluna): {qtd_blocos_total:.0f}")
+    print(f"Quantidade total de blocos (sem os de coluna): {(largura_parede_cm * altura_coluna_cm // altura):.0f}")
 
-# Calcula quantidade de colunas necessárias com distância mínima de 2 metros
-distancia_minima_m = 2
-quantidade_colunas_distancia_minima = calcular_quantidade_colunas(distancia_entre_colunas_m, distancia_minima_m)
-
-# Imprime resultado
-print(f"Para que a parede fique forte, é necessário utilizar {quantidade_colunas_distancia_minima} colunas a cada 2 metros.")
+calcular_bim()
